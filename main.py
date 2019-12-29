@@ -38,12 +38,12 @@ def get_distance(t1, t2):
     return distance
 
 
-def longest_point(start, dic):
+def longest_point(start, lst):
     """スタート地点から最長のゴール地点を探す"""
 
     arr = []
 
-    for v in dic.keys():
+    for v in lst:
         distance = get_distance(start, v)
         arr.append([distance, v])
 
@@ -56,26 +56,26 @@ def main():
     # 迷路の大きさ 奇数
     SIZE = 31
 
-    # maze = ana.main(SIZE)
-    maze = bou.main(SIZE)
+    maze = ana.main(SIZE)
+    # maze = bou.main(SIZE)
 
-    # 行き止まり地点の辞書
-    dead_end_dic = {}
+    # 行き止まり地点のリスト
+    dead_end = []
 
     for i, _ in enumerate(maze):
         for j, _ in enumerate(maze[i]):
             if maze[i][j] == 0:
                 if find_dead_end(maze, i, j):
-                    dead_end_dic[(i, j)] = 0
+                    dead_end.append((i, j))
 
     # ランダムにスタート地点を決める
-    start = random.choice(list(dead_end_dic.keys()))
+    start = random.choice(dead_end)
     print("start", start)
-    # 決まったスタート地点は辞書から削除
-    del dead_end_dic[start]
+    # 決まったスタート地点は削除
+    dead_end.remove(start)
 
     # スタート地点から最長の行き止まり地点を探しそこをゴールにする
-    goal = longest_point(start, dead_end_dic)
+    goal = longest_point(start, dead_end)
     print("goal", goal)
 
     # 表示確認
